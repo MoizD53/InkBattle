@@ -17,9 +17,11 @@ export function Header() {
     <header className="h-16 shrink-0 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-40 relative">
       <Link to="/" className="flex items-center gap-2.5">
         <img
-          src="/assets/logo.jpg"
+  src={new URL('/assets/logo.jpg', import.meta.env.BASE_URL).toString()}
           alt="Scribble"
           width={28}
+
+
           height={28}
           className="select-none"
           style={{ mixBlendMode: 'screen' }}
