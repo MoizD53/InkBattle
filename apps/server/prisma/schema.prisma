@@ -1,0 +1,84 @@
+// ─── Prisma Schema ────────────────────────────────────────────
+// Scribble Multiplayer Drawing Game
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  username    String
+  avatar      String   @default("")
+  isGuest     Boolean  @default(true)
+  provider    String?  // e.g. "google", "github"
+  providerId  String?  // external OAuth ID
+
+  level       Int      @default(1)
+  xp          Int      @default(0)
+  wins        Int      @default(0)
+  gamesPlayed Int      @default(0)
+  totalScore  Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  hostedRooms  Room[]        @relation("HostedRooms")
+  wonMatches   Match[]       @relation("MatchWinner")
+  achievements Achievement[]
+
+  @@index([username])
+  @@index([provider, providerId])
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  hostId    String
+  settings  String   @default("{}")
+  status    String   @default("waiting") // waiting | playing | finished
+  isPrivate Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  host    User    @relation("HostedRooms", fields: [hostId], references: [id])
+  matches Match[]
+
+  @@index([code])
+  @@index([status])
+}
+
+model Match {
+  id        String    @id @default(cuid())
+  roomId    String
+  players   String    @default("[]")  // PlayerState[] snapshot
+  rounds    String    @default("[]")  // RoundResult[] snapshot
+  scores    String    @default("{}") // Record<string, number>
+  winnerId  String?
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+
+  // Relations
+  room   Room  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  winner User? @relation("MatchWinner", fields: [winnerId], references: [id])
+
+  @@index([roomId])
+}
+
+model Achievement {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String   // e.g. "first_win", "streak_5", "artist_100"
+  unlockedAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@index([userId])
+}
