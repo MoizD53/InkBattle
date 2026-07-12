@@ -10,8 +10,8 @@ registerSW({ immediate: true });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+   <BrowserRouter basename="/InkBattle">
+  <App />
+</BrowserRouter>
   </StrictMode>,
 );
