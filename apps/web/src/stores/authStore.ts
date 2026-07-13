@@ -15,7 +15,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: !!localStorage.getItem('token'),
   
   loginAsGuest: async (username: string) => {
-    const res = await fetch('/api/auth/guest', {
+    const API_URL =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3001'
+    : 'https://inkbattle-z6ua.onrender.com';
+
+const res = await fetch(`${API_URL}/api/auth/guest`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ username }),
+});
+
+const res = await fetch(`${API_URL}/api/auth/guest`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username })
