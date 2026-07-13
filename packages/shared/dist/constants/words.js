@@ -98,9 +98,10 @@ export function getRandomWords(difficulty, count) {
     const used = new Set();
     while (selected.length < count && selected.length < words.length) {
         const idx = Math.floor(Math.random() * words.length);
-        if (!used.has(idx)) {
+        const word = words[idx];
+        if (word && !used.has(idx)) {
             used.add(idx);
-            selected.push(words[idx]);
+            selected.push(word);
         }
     }
     return selected;

@@ -23,7 +23,12 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
       existing.disconnect(); // Disconnect old socket
     }
 
-    const socket: AppSocket = io(window.location.hostname === 'localhost' ? 'http://localhost:3001' : '/', {
+    const socket: AppSocket = io(
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3001'
+    : 'https://inkbattle-z6ua.onrender.com',
+  {
+    
       auth: { token },
       transports: ['websocket'],
       reconnectionAttempts: 5,
