@@ -134,7 +134,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
             transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
           >
             <motion.img
-              src="/assets/logo.jpg"
+              src={"/InkBattle/" + "assets/logo.jpg"}
               alt=""
               width={56}
               height={56}

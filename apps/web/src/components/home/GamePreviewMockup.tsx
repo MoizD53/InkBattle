@@ -101,7 +101,7 @@ export function GamePreviewMockup() {
           {/* Scoreboard */}
           <div className="w-44 border-r border-white/[0.04] p-3 flex flex-col gap-2">
             <div className="text-[10px] uppercase tracking-[0.15em] text-white/25 font-semibold px-1 mb-1">Players</div>
-            {scores
+            {[...scores]
               .sort((a, b) => b.score - a.score)
               .map((p, i) => (
                 <motion.div
